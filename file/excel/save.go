@@ -17,17 +17,21 @@ func SaveExcel[T ~[]E, E Xlsx](filepath string, data T) (err error) {
 	xlsx := excelize.NewFile()
 	sheet := data[0].GetXLSXSheetName()
 	index := xlsx.NewSheet(sheet)
-	xlsx.SetActiveSheet(index)
 
 	s := reflect.ValueOf(data)
 
 	for i := 0; i < s.Len(); i++ {
-		elem := s.Index(i).Interface()
-		elemType := reflect.TypeOf(elem)
-		elemValue := reflect.ValueOf(elem)
+		elem := s.Index(i)
+		// drop ptr
+		if elem.Kind() == reflect.Ptr {
+			elem = elem.Elem()
+		}
+
+		elemType := elem.Type()
+
 		for j := 0; j < elemType.NumField(); j++ {
 			field := elemType.Field(j)
-			tag := field.Tag.Get("xlsx")
+			tag := field.Tag.Get("excel")
 			if tag == "" || tag == "-" {
 				continue
 			}
@@ -36,9 +40,11 @@ func SaveExcel[T ~[]E, E Xlsx](filepath string, data T) (err error) {
 				err = xlsx.SetCellValue(sheet, fmt.Sprintf("%c%d", column, i+1), tag)
 			}
 
-			err = xlsx.SetCellValue(sheet, fmt.Sprintf("%c%d", column, i+2), elemValue.Field(j).Interface())
+			err = xlsx.SetCellValue(sheet, fmt.Sprintf("%c%d", column, i+2), elem.Field(j).Interface())
 		}
 	}
+	xlsx.SetActiveSheet(index)
+	xlsx.DeleteSheet("Sheet1")
 	err = xlsx.SaveAs(filepath)
 	return
 }

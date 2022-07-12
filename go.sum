@@ -12,10 +12,6 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.1 h1:5TQK59W5E3v0r2duFAb7P95B6hEeOyEnHRa8MjYSMTY=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/szyhf/go-convert v1.0.0 h1:L49o5JLMPzXYRggFqwNEzDw1gAQktpyWfKZqcPzEmX8=
-github.com/szyhf/go-convert v1.0.0/go.mod h1:BgotSGjAF33Z4fcU/fe8OPYZoo6mKiBiKvJ+FVih5UM=
-github.com/szyhf/go-excel v1.5.2-0.20220428001457-9b1999fa24cb h1:/ql1TocvO6RJYGD52LD8LGro5tKxvJ5lmoaK2COP+yE=
-github.com/szyhf/go-excel v1.5.2-0.20220428001457-9b1999fa24cb/go.mod h1:W7GkeorrNkBXQRwwY66+fuH9sJqcU8ahcBMJF5A64pY=
 github.com/xuri/efp v0.0.0-20220407160117-ad0f7a785be8 h1:3X7aE0iLKJ5j+tz58BpvIZkXNV7Yq4jC93Z/rbN2Fxk=
 github.com/xuri/efp v0.0.0-20220407160117-ad0f7a785be8/go.mod h1:ybY/Jr0T0GTCnYjKqmdwxyxn2BQf2RcQIIvex5QldPI=
 github.com/xuri/excelize/v2 v2.6.0 h1:m/aXAzSAqxgt74Nfd+sNzpzVKhTGl7+S9nbG4A57mF4=

@@ -11,21 +11,30 @@ import (
 	"testing"
 )
 
-func TestSaveXlsx(t *testing.T) {
+func TestSaveExcel(t *testing.T) {
 	values := []Test{{Name: "张三", Age: 17, Sex: "男"}, {Name: "李四", Age: 18, Sex: "女"}}
 	err := excel.SaveExcel("test.xlsx", values)
 	assert.NoError(t, err)
 
-	data, _ := excel.LoadXlsx[Test]("test.xlsx")
+	data, _ := excel.LoadExcel[Test]("test.xlsx")
 	assert.Equal(t, data, values)
+
+	values1 := []Test{{Name: "张三", Age: 17, Sex: "男"}, {Name: "李四", Age: 18, Sex: "女"}}
+	err1 := excel.SaveExcel("test.xlsx", values1)
+	assert.NoError(t, err1)
+
+	data1, _ := excel.LoadExcel[Test]("test.xlsx")
+	assert.Equal(t, data1, values1)
 }
 
 func ExampleSaveExcel() {
 	/***
 	type Test struct {
-		Name string `xlsx:"name"`
-		Age  int    `xlsx:"age"`
-		Sex  string `xlsx:"sex"`
+		Name  string `excel:"name"`
+		Age   int    `excel:"age"`
+		Sex   string `excel:"sex"`
+		High  int    `excel:"-"`
+		Width int
 	}
 
 	func (t Test) GetXLSXSheetName() string {
