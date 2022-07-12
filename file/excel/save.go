@@ -8,14 +8,15 @@ import (
 	"fmt"
 	"github.com/xuri/excelize/v2"
 	"reflect"
+	"strings"
 )
 
 // SaveExcel save data to excel.
 //
-// must be implemented Xlsx interface.
-func SaveExcel[T ~[]E, E Xlsx](filepath string, data T) (err error) {
+// must be implemented Excel interface.
+func SaveExcel[T ~[]E, E Excel](filepath string, data T) (err error) {
 	xlsx := excelize.NewFile()
-	sheet := data[0].GetXLSXSheetName()
+	sheet := data[0].GetSheetName()
 	index := xlsx.NewSheet(sheet)
 
 	s := reflect.ValueOf(data)
@@ -35,12 +36,26 @@ func SaveExcel[T ~[]E, E Xlsx](filepath string, data T) (err error) {
 			if tag == "" || tag == "-" {
 				continue
 			}
+
+			// get split sep for tag
+			var split string
+			if strings.Contains(tag, ",") {
+				sep := strings.SplitN(tag, ",", 2)
+				tag = sep[0]
+				split = sep[1]
+			}
+
 			column := 'A' + j
 			if i == 0 {
 				err = xlsx.SetCellValue(sheet, fmt.Sprintf("%c%d", column, i+1), tag)
 			}
-
-			err = xlsx.SetCellValue(sheet, fmt.Sprintf("%c%d", column, i+2), elem.Field(j).Interface())
+			if split != "" {
+				vs := elem.Field(j).Interface().([]string)
+				value := strings.Join(vs, split)
+				err = xlsx.SetCellValue(sheet, fmt.Sprintf("%c%d", column, i+2), value)
+			} else {
+				err = xlsx.SetCellValue(sheet, fmt.Sprintf("%c%d", column, i+2), elem.Field(j).Interface())
+			}
 		}
 	}
 	xlsx.SetActiveSheet(index)

@@ -15,6 +15,9 @@ func To[T f.TypeConvert](data string) (value T, err error) {
 	// get value type
 	valueType := reflect.TypeOf(value)
 
+	if data == "" {
+		return
+	}
 	var flag any
 
 	switch valueType.Kind() {
