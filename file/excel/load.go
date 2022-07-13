@@ -80,7 +80,10 @@ func LoadExcel[T Excel](filePath string) (data []T, err error) {
 			if strings.Contains(tag, ",") {
 				sep := strings.SplitN(tag, ",", 2)
 				tag = sep[0]
-				split = sep[1]
+				split = strings.TrimSpace(sep[1])
+				if split == "Space" {
+					split = " "
+				}
 			}
 
 			if j, ok := title[tag]; !ok {
@@ -94,24 +97,25 @@ func LoadExcel[T Excel](filePath string) (data []T, err error) {
 					d = row[j]
 				}
 
+				if d == "" {
+					continue
+				}
+
 				if split == "" {
-					if err = cp(&v, row[j]); err != nil {
+					if err = cp(&v, d); err != nil {
 						return
 					}
 				} else {
-					if d == "" {
-						continue
-					}
-
 					vs := strings.Split(row[j], split)
 
 					v.Set(reflect.MakeSlice(v.Type(), len(vs), len(vs)))
 					for k, v1 := range vs {
-						v.Index(k).SetString(v1)
+						v.Index(k).SetString(strings.TrimSpace(v1))
 					}
 				}
 			}
 		}
+
 		data[index] = t
 	}
 	return
